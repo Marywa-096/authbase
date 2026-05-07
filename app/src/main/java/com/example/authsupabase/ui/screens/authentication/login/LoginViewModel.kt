@@ -30,6 +30,7 @@ class LoginViewModel : ViewModel() {
                 _isLoggedIn.value = true
                 _message.value = "Login Successful!"
             } catch (e: Exception) {
+                e.printStackTrace()
                 _isLoading.value = false
                 _message.value = "Login Failed: ${e.message}"
             }

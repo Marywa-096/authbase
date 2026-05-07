@@ -26,6 +26,7 @@ class RegisterViewModel : ViewModel() {
                 _isLoading.value = false
                 _message.value = "Account created successfully! Please login."
             } catch (e: Exception) {
+                e.printStackTrace()
                 _isLoading.value = false
                 _message.value = "Registration failed: ${e.message}"
             }

@@ -10,6 +10,12 @@ import com.example.authsupabase.ui.screens.authentication.forgotpassword.ForgotP
 import com.example.authsupabase.ui.screens.authentication.login.LoginScreen
 import com.example.authsupabase.ui.screens.authentication.register.RegisterScreen
 import com.example.authsupabase.ui.screens.home.HomeScreen
+import com.example.authsupabase.ui.screens.prevention.PreventionScreen
+import com.example.authsupabase.ui.screens.management.ManagementScreen
+import com.example.authsupabase.ui.screens.records.HealthRecordsScreen
+import com.example.authsupabase.ui.screens.reminders.RemindersScreen
+import com.example.authsupabase.ui.screens.emergency.EmergencyScreen
+import com.example.authsupabase.ui.screens.report.ReportDiseaseScreen
 
 @Composable
 fun AppNavigation(
@@ -24,6 +30,12 @@ fun AppNavigation(
         composable(ROUTES.Login.name) { LoginScreen( navController= navController,modifier = modifier) }
         composable(ROUTES.ForgotPassword.name) { ForgotPasswordScreen( navController= navController,modifier = modifier) }
         composable(ROUTES.Register.name) { RegisterScreen( navController= navController,modifier = modifier) }
-        composable(ROUTES.Home.name) { HomeScreen() }
+        composable(ROUTES.Home.name) { HomeScreen(navController = navController) }
+        composable(ROUTES.Prevention.name) { PreventionScreen(navController = navController) }
+        composable(ROUTES.Management.name) { ManagementScreen(navController = navController) }
+        composable(ROUTES.HealthRecords.name) { HealthRecordsScreen(navController = navController) }
+        composable(ROUTES.Reminders.name) { RemindersScreen(navController = navController) }
+        composable(ROUTES.Emergency.name) { EmergencyScreen(navController = navController) }
+        composable(ROUTES.ReportDisease.name) { ReportDiseaseScreen(navController = navController) }
     }
 }

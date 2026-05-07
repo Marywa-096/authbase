@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.authsupabase.models.UserModel
+import com.example.authsupabase.ui.navigation.ROUTES
 
 @Composable
 fun RegisterScreen(
@@ -38,21 +39,20 @@ fun RegisterScreen(
         modifier = modifier.fillMaxSize()
     ) {
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text(text = "password") },
-            maxLines = 1
-        )
-        OutlinedTextField(
             value = email,
             onValueChange = { email = it },
             label = { Text(text = "email") },
             maxLines = 1
         )
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(text = "password") },
+            maxLines = 1
+        )
         HorizontalDivider()
         Text(text = responseMessage)
-        Text(text = isLoading.toString())
-        HorizontalDivider()
+
         if (isLoading) {
             CircularProgressIndicator()
         } else {
@@ -71,7 +71,7 @@ fun RegisterScreen(
 
         HorizontalDivider()
 
-        OutlinedButton(onClick = { navController.popBackStack() }) {
+        OutlinedButton(onClick = { navController.navigate(ROUTES.Login.name) }) {
             Text(text = "Already have an account? Login")
         }
     }

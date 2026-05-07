@@ -5,5 +5,11 @@ enum class ROUTES {
     Login,
     Register,
     ForgotPassword,
-    Home
+    Home,
+    Prevention,
+    Management,
+    HealthRecords,
+    Reminders,
+    Emergency,
+    ReportDisease
 }

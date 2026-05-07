@@ -1,20 +1,12 @@
 package com.example.authsupabase.repository
 
 import com.example.authsupabase.models.UserModel
-import io.github.jan.supabase.auth.Auth
+import com.example.authsupabase.network.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
 
 class AuthRepository : AuthService {
-    private val supabase = createSupabaseClient(
-        supabaseUrl = "https://xtzvalmhpywlnhzhsjhg.supabase.co",
-        supabaseKey = "sb_publishable_0xmF5oJHztzL0pVctB81nw_YQ-48ItT"
-    ) {
-        install(Postgrest)
-        install(Auth)
-    }
+    private val supabase = SupabaseClient.client
 
     override suspend fun registerUser(user: UserModel) {
         supabase.auth.signUpWith(Email) {
