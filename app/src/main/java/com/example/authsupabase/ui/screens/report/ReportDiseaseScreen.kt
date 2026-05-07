@@ -7,8 +7,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.authsupabase.ui.navigation.ROUTES
+import com.example.authsupabase.ui.screens.records.viewmodel.HealthViewModel
+
 @Composable
-fun ReportDiseaseScreen(navController: NavHostController) {
+fun ReportDiseaseScreen(
+    navController: NavHostController,
+    healthViewModel: HealthViewModel = viewModel()
+) {
     var diseaseName by remember { mutableStateOf("") }
     var symptoms by remember { mutableStateOf("") }
 
@@ -41,12 +48,14 @@ fun ReportDiseaseScreen(navController: NavHostController) {
             
             Button(
                 onClick = { 
-                    // TODO: Submit report to Supabase/Health Worker
-                    navController.popBackStack()
+                    if (diseaseName.isNotEmpty() && symptoms.isNotEmpty()) {
+                        healthViewModel.addReport(diseaseName, symptoms)
+                        navController.navigate(ROUTES.Guidance.name)
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Submit Report")
+                Text("Next")
             }
         }
     }
