@@ -34,6 +34,8 @@ fun LoginScreen(
     val isLoggedIn by loginViewModel.isLoggedIn.collectAsState()
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember{ mutableStateOf(TextFieldValue("")) }
+    var  fullName by remember { mutableStateOf(TextFieldValue("")) }
+    var contacts by remember { mutableStateOf(TextFieldValue("")) }
 
     LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {

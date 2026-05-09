@@ -12,5 +12,6 @@ enum class ROUTES {
     Reminders,
     Emergency,
     ReportDisease,
-    Guidance
+    Guidance,
+    NearbyHospitals
 }
