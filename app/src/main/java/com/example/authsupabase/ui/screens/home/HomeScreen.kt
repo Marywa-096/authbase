@@ -94,7 +94,8 @@ fun HomeScreen(
                         modifier = Modifier
                             .size(60.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary),
+                            .background(MaterialTheme.colorScheme.primary)
+                            .clickable { navController.navigate(ROUTES.Profile.name) },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
