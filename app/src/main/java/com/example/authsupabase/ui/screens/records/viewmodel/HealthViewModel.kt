@@ -73,7 +73,15 @@ class HealthViewModel : ViewModel() {
         }
     }
 
-    fun addRecord(bloodPressure: String, sugarLevel: String, weight: String, notes: String) {
+    fun addRecord(
+        bloodPressure: String? = null,
+        sugarLevel: String? = null,
+        weight: String? = null,
+        type: String? = null,
+        value: String? = null,
+        unit: String? = null,
+        notes: String? = null
+    ) {
         val userId = healthRepository.getCurrentUserId() ?: return
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val current = sdf.format(Date())
@@ -83,6 +91,9 @@ class HealthViewModel : ViewModel() {
             blood_pressure = bloodPressure,
             sugar_level = sugarLevel,
             weight = weight,
+            type = type,
+            value = value,
+            unit = unit,
             notes = notes,
             date = current
         )

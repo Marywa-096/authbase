@@ -4,6 +4,8 @@ import com.example.authsupabase.models.UserModel
 import com.example.authsupabase.network.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 class AuthRepository : AuthService {
     private val supabase = SupabaseClient.client
@@ -12,6 +14,9 @@ class AuthRepository : AuthService {
         supabase.auth.signUpWith(Email) {
             email = user.email
             password = user.password
+            data = buildJsonObject {
+                put("full_name", user.fullname)
+            }
         }
     }
 

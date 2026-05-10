@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.authsupabase.ui.navigation.ROUTES
 
 @Composable
 fun GuidanceScreen(navController: NavHostController) {
@@ -23,17 +24,20 @@ fun GuidanceScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             @OptIn(ExperimentalMaterial3Api::class)
-            TopAppBar(title = { Text("Health Guidance") })
+            TopAppBar(title = { Text("Control & Prevention") })
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).padding(16.dp)) {
             Text(
-                text = "How to Control Your Condition",
+                text = "Condition Management Guidance",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.weight(1f)
+            ) {
                 items(guidanceList) { advice ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -48,15 +52,17 @@ fun GuidanceScreen(navController: NavHostController) {
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { navController.navigate("Home") {
-                    popUpTo("Home") { inclusive = true }
-                } },
+                onClick = { 
+                    navController.navigate(ROUTES.Home.name) {
+                        popUpTo(ROUTES.ReportDisease.name) { inclusive = true }
+                    } 
+                },
                 modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                Text("Back to Dashboard")
+                Text("Go to Dashboard")
             }
         }
     }

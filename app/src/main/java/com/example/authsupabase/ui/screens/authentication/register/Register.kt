@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -51,9 +51,19 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmpassword by remember { mutableStateOf("") }
+    var validationError by remember { mutableStateOf("") }
 
     val isLoading by registerViewModel.isLoading.collectAsState()
-    val message by registerViewModel.message.collectAsState()
+    val serverMessage by registerViewModel.message.collectAsState()
+
+    // Navigation logic after successful registration
+    LaunchedEffect(serverMessage) {
+        if (serverMessage.contains("successfully")) {
+            navController.navigate(ROUTES.ReportDisease.name) {
+                popUpTo(ROUTES.Register.name) { inclusive = true }
+            }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -71,7 +81,7 @@ fun RegisterScreen(
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Don't have an account? Register here",
+            text = "Create an account to track your health",
             fontSize = 18.sp,
             color = Color.Black
         )
@@ -79,7 +89,7 @@ fun RegisterScreen(
 
         OutlinedTextField(
             value = fullname,
-            onValueChange = { fullname = it },
+            onValueChange = { fullname = it; validationError = "" },
             label = { Text(text = "Full Name") },
             leadingIcon = {
                 Icon(
@@ -92,7 +102,7 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it; validationError = "" },
             label = { Text(text = "Email") },
             leadingIcon = {
                 Icon(
@@ -105,7 +115,7 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it; validationError = "" },
             label = { Text(text = "Password") },
             leadingIcon = {
                 Icon(
@@ -119,7 +129,7 @@ fun RegisterScreen(
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = confirmpassword,
-            onValueChange = { confirmpassword = it },
+            onValueChange = { confirmpassword = it; validationError = "" },
             label = { Text(text = "Confirm Password") },
             leadingIcon = {
                 Icon(
@@ -132,9 +142,13 @@ fun RegisterScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        if (message.isNotEmpty()) {
-            Text(text = message, color = if (message.contains("successfully")) Color.Green else Color.Red)
-            Spacer(modifier = Modifier.height(8.dp))
+        val displayMessage = validationError.ifEmpty { serverMessage }
+        if (displayMessage.isNotEmpty()) {
+            Text(
+                text = displayMessage,
+                color = if (displayMessage.contains("successfully")) Color.Green else Color.Red,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
         }
 
         if (isLoading) {
@@ -142,11 +156,17 @@ fun RegisterScreen(
         } else {
             Button(
                 onClick = {
-                    if (password == confirmpassword) {
-                        val user = UserModel(email = email, password = password)
-                        registerViewModel.registerUser(user)
-                    } else {
-                        // Normally we'd handle this via ViewModel or a simple toast
+                    when {
+                        fullname.isEmpty() || email.isEmpty() || password.isEmpty() || confirmpassword.isEmpty() -> {
+                            validationError = "All fields are required"
+                        }
+                        password != confirmpassword -> {
+                            validationError = "Passwords do not match"
+                        }
+                        else -> {
+                            val user = UserModel(fullname = fullname, email = email, password = password)
+                            registerViewModel.registerUser(user)
+                        }
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Black),

@@ -18,6 +18,7 @@ import com.example.authsupabase.ui.screens.emergency.EmergencyScreen
 import com.example.authsupabase.ui.screens.report.ReportDiseaseScreen
 import com.example.authsupabase.ui.screens.guidance.GuidanceScreen
 import com.example.authsupabase.ui.screens.hospitals.NearbyHospitalsScreen
+import com.example.authsupabase.ui.screens.notifications.NotificationsScreen
 
 @Composable
 fun AppNavigation(
@@ -41,5 +42,6 @@ fun AppNavigation(
         composable(ROUTES.ReportDisease.name) { ReportDiseaseScreen(navController = navController) }
         composable(ROUTES.Guidance.name) { GuidanceScreen(navController = navController) }
         composable(ROUTES.NearbyHospitals.name) { NearbyHospitalsScreen(navController = navController) }
+        composable(ROUTES.Notifications.name) { NotificationsScreen(navController = navController) }
     }
 }
